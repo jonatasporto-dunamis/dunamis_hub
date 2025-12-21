@@ -37,7 +37,7 @@ app.get('/api/performance/sample', async (req, res) => {
 
 const port = process.env.PORT || 4000
 app.listen(port, () => {
-  console.log(`Dunamis Hub backend listening on port ${port}`)
+  console.log(`Servidor Dunamis Hub ouvindo na porta ${port}`)
   // start alerts worker in background
   startAlertWorker()
 })

@@ -54,19 +54,19 @@ export async function evaluateAlertsOnce() {
       if (fired) {
         await prisma.alertEvent.create({ data: { alertId: a.id, clientId: a.clientId, metric: a.metric, currentValue: curr, previousValue: prev, changePercent: change } })
         if (a.notificationChannel === 'console') {
-          console.log(`ALERT fired for client ${a.clientId} metric ${a.metric}: change ${change.toFixed(2)}%`)
+          console.log(`ALERTA disparado para cliente ${a.clientId} métrica ${a.metric}: variação ${change.toFixed(2)}%`)
         }
       }
     } catch (err) {
-      console.error('Error evaluating alert', a.id, err)
+      console.error('Erro ao avaliar alerta', a.id, err)
     }
   }
 }
 
 export function startAlertWorker() {
   // run immediately, then interval
-  evaluateAlertsOnce().catch(err => console.error('alert worker initial run error', err))
-  setInterval(() => evaluateAlertsOnce().catch(err => console.error('alert worker error', err)), INTERVAL_MIN * 60 * 1000)
+  evaluateAlertsOnce().catch(err => console.error('Erro na execução inicial do worker de alertas', err))
+  setInterval(() => evaluateAlertsOnce().catch(err => console.error('Erro no worker de alertas', err)), INTERVAL_MIN * 60 * 1000)
 }
 
 export default startAlertWorker

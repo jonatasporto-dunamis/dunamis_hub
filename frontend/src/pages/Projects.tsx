@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default function Projects() {
   const [projects, setProjects] = useState<any[]>([])
@@ -55,13 +56,13 @@ export default function Projects() {
           </thead>
           <tbody>
             {projects.map(p => (
-              <tr key={p.id}>
-                <td>{p.clientId}</td>
-                <td>{p.name}</td>
-                <td>{p.status}</td>
-                <td>{new Date(p.createdAt).toLocaleDateString('pt-BR')}</td>
-              </tr>
-            ))}
+                <tr key={p.id}>
+                  <td>{p.clientId}</td>
+                  <td><Link to={`/projects/${p.id}`}>{p.name}</Link></td>
+                  <td>{p.status}</td>
+                  <td>{new Date(p.createdAt).toLocaleDateString('pt-BR')}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </section>

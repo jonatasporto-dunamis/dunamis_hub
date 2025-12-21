@@ -28,7 +28,7 @@ async function main() {
     await prisma.campaignPerformance.create({ data: s })
   }
 
-  console.log('Seed finished')
+  console.log('Semente finalizada')
 }
 
 main().catch(e => { console.error(e); process.exit(1) }).finally(() => prisma.$disconnect())
@@ -62,7 +62,7 @@ async function main() {
     await prisma.campaignPerformance.create({ data: s })
   }
 
-  console.log('Seed finished')
+  console.log('Semente finalizada')
 }
 
 main().catch(e => { console.error(e); process.exit(1) }).finally(() => prisma.$disconnect())
@@ -95,7 +95,7 @@ async function main() {
       await prisma.campaignPerformance.create({ data: s })
     }
 
-  console.log('Seed finished')
+  console.log('Semente finalizada')
 }
 
 main().catch(e => { console.error(e); process.exit(1) }).finally(() => prisma.$disconnect())

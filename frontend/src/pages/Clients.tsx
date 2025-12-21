@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 export default function Clients() {
   const [clients, setClients] = useState<any[]>([])
@@ -34,7 +35,7 @@ export default function Clients() {
         <tbody>
           {clients.map(c => (
             <tr key={c.id}>
-              <td>{c.name}</td>
+              <td><Link to={`/clients/${c.id}`}>{c.name}</Link></td>
               <td>{c.legalName || '-'}</td>
               <td>{c.document || '-'}</td>
               <td>{c.status}</td>

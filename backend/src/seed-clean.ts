@@ -28,7 +28,7 @@ async function main() {
     await prisma.campaignPerformance.create({ data: s })
   }
 
-  console.log('Seed finished (clean)')
+  console.log('Semente finalizada (limpa)')
 }
 
 main().catch(e => { console.error(e); process.exit(1) }).finally(() => prisma.$disconnect())
