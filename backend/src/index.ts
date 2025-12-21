@@ -3,6 +3,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth'
 import userRoutes from './routes/users'
+import alertsRoutes from './routes/alerts'
+import startAlertWorker from './alertWorker'
 import prisma from './prismaClient'
 
 dotenv.config()
@@ -13,6 +15,7 @@ app.use(express.json())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/alerts', alertsRoutes)
 
 app.get('/api/clients', async (req, res) => {
   const clients = await prisma.clientCompany.findMany({ take: 50 })
@@ -27,4 +30,6 @@ app.get('/api/performance/sample', async (req, res) => {
 const port = process.env.PORT || 4000
 app.listen(port, () => {
   console.log(`Dunamis Hub backend listening on port ${port}`)
+  // start alerts worker in background
+  startAlertWorker()
 })

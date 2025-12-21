@@ -29,6 +29,7 @@ model ClientCompany {
   contracts  Contract[]
   projects   Project[]
   alerts     PerformanceAlert[]
+  alertEvents AlertEvent[]
   accesses   UserClientAccess[]
   receivables AccountReceivable[]
 }
@@ -77,6 +78,21 @@ model PerformanceAlert {
   condition            String
   notificationChannel  String
   active               Boolean  @default(true)
+  events               AlertEvent[]
+}
+
+model AlertEvent {
+  id           Int      @id @default(autoincrement())
+  alert        PerformanceAlert? @relation(fields: [alertId], references: [id])
+  alertId      Int?
+  client       ClientCompany @relation(fields: [clientId], references: [id])
+  clientId     Int
+  metric       String
+  currentValue Float
+  previousValue Float
+  changePercent Float
+  createdAt    DateTime @default(now())
+  resolved     Boolean  @default(false)
 }
 
 model Project {
