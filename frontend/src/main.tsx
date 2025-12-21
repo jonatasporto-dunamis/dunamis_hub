@@ -3,6 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Clients from './pages/Clients'
+import Alerts from './pages/Alerts'
+import Projects from './pages/Projects'
+import Finance from './pages/Finance'
+import Users from './pages/Users'
 import axios from 'axios'
 
 // Set auth header globally if token present
@@ -17,6 +22,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/finance" element={<Finance />} />
+        <Route path="/users" element={<Users />} />
       </Routes>
     </BrowserRouter>
   )

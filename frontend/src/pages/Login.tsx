@@ -12,9 +12,11 @@ export default function Login() {
     try {
       const res = await axios.post('/api/auth/login', { email, password })
       localStorage.setItem('token', res.data.token)
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
       window.location.href = '/dashboard'
     } catch (err: any) {
-      setError('Falha ao autenticar. Verifique suas credenciais.')
+      setError('Falha ao autenticar. Verifique suas credenciais e tente novamente.')
     }
   }
 
