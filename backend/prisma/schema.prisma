@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  role       String   @default("VIEWER")
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  accesses   UserClientAccess[]
+}
+
+model ClientCompany {
+  id         Int      @id @default(autoincrement())
+  name       String
+  legalName  String?
+  document   String?
+  status     String @default("ACTIVE")
+  createdAt  DateTime @default(now())
+  adAccounts AdAccount[]
+  contracts  Contract[]
+  projects   Project[]
+  alerts     PerformanceAlert[]
+  accesses   UserClientAccess[]
+  receivables AccountReceivable[]
+}
+
+model UserClientAccess {
+  id          Int    @id @default(autoincrement())
+  user        User   @relation(fields: [userId], references: [id])
+  userId      Int
+  client      ClientCompany @relation(fields: [clientId], references: [id])
+  clientId    Int
+  accessLevel String
+}
+
+model AdAccount {
+  id                 Int      @id @default(autoincrement())
+  client             ClientCompany @relation(fields: [clientId], references: [id])
+  clientId           Int
+  platform           String
+  externalAccountId  String
+  name               String
+  active             Boolean  @default(true)
+  performances       CampaignPerformance[]
+}
+
+model CampaignPerformance {
+  id            Int      @id @default(autoincrement())
+  adAccount     AdAccount @relation(fields: [adAccountId], references: [id])
+  adAccountId   Int
+  campaignName  String
+  date          DateTime
+  impressions   Int      @default(0)
+  clicks        Int      @default(0)
+  spend         Float    @default(0)
+  leads         Int      @default(0)
+  cpl           Float?
+  ctr           Float?
+  createdAt     DateTime @default(now())
+}
+
+model PerformanceAlert {
+  id                   Int      @id @default(autoincrement())
+  client               ClientCompany @relation(fields: [clientId], references: [id])
+  clientId             Int
+  metric               String
+  thresholdValue       Float
+  condition            String
+  notificationChannel  String
+  active               Boolean  @default(true)
+}
+
+model Project {
+  id         Int      @id @default(autoincrement())
+  client     ClientCompany @relation(fields: [clientId], references: [id])
+  clientId   Int
+  name       String
+  status     String @default("PLANNED")
+  createdAt  DateTime @default(now())
+  tasks      Task[]
+}
+
+model Task {
+  id              Int      @id @default(autoincrement())
+  project         Project  @relation(fields: [projectId], references: [id])
+  projectId       Int
+  title           String
+  description     String?
+  assignedUserId  Int?
+  status          String @default("TODO")
+  dueDate         DateTime?
+}
+
+model Contract {
+  id           Int      @id @default(autoincrement())
+  client       ClientCompany @relation(fields: [clientId], references: [id])
+  clientId     Int
+  monthlyValue Float
+  billingDay   Int
+  startDate    DateTime
+  status       String
+  receivables  AccountReceivable[]
+}
+
+model AccountReceivable {
+  id          Int      @id @default(autoincrement())
+  client      ClientCompany @relation(fields: [clientId], references: [id])
+  clientId    Int
+  contract    Contract @relation(fields: [contractId], references: [id])
+  contractId  Int
+  dueDate     DateTime
+  amount      Float
+  paid        Boolean  @default(false)
+}

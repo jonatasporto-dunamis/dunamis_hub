@@ -1,0 +1,12 @@
+body { font-family: system-ui, Arial, sans-serif; margin: 0; }
+.auth-page { display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column }
+.card { padding:16px; border:1px solid #eee; border-radius:8px; min-width:280px }
+.auth-page input { width:100%; padding:8px; margin:8px 0 }
+.auth-page button { padding:10px 12px; background:#0b5cff; color:#fff; border:none; border-radius:6px }
+.app { display:flex; height:100vh }
+.sidebar { width:220px; background:#0f1724; color:#fff; padding:20px }
+.sidebar a { display:block; color:#cbd5e1; margin:8px 0; text-decoration:none }
+.main { flex:1; padding:20px }
+.kpis { display:flex; gap:12px }
+.kpis .card { padding:12px; border:1px solid #eee; border-radius:8px; min-width:160px }
+.error { color:#b91c1c; margin:8px 0 }

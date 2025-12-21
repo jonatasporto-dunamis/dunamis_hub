@@ -1,0 +1,30 @@
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import authRoutes from './routes/auth'
+import userRoutes from './routes/users'
+import prisma from './prismaClient'
+
+dotenv.config()
+
+const app = express()
+app.use(cors())
+app.use(express.json())
+
+app.use('/api/auth', authRoutes)
+app.use('/api/users', userRoutes)
+
+app.get('/api/clients', async (req, res) => {
+  const clients = await prisma.clientCompany.findMany({ take: 50 })
+  res.json(clients)
+})
+
+app.get('/api/performance/sample', async (req, res) => {
+  const perf = await prisma.campaignPerformance.findMany({ take: 200 })
+  res.json(perf)
+})
+
+const port = process.env.PORT || 4000
+app.listen(port, () => {
+  console.log(`Dunamis Hub backend listening on port ${port}`)
+})
