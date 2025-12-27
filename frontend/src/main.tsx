@@ -13,6 +13,7 @@ import FinanceDetail from './pages/FinanceDetail'
 import Users from './pages/Users'
 import UserDetail from './pages/UserDetail'
 import Layout from './components/Layout'
+import { AuthProvider, ProtectedRoute } from './auth/AuthProvider'
 import axios from 'axios'
 
 // Set auth header globally if token present
@@ -23,23 +24,25 @@ if (token) {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route element={<Layout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/clients/:id" element={<ClientDetail />} />
-          <Route path="/alerts" element={<Alerts />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:id" element={<ProjectDetail />} />
-          <Route path="/finance" element={<Finance />} />
-          <Route path="/finance/:id" element={<FinanceDetail />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/users/:id" element={<UserDetail />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/clients" element={<ProtectedRoute><Clients /></ProtectedRoute>} />
+            <Route path="/clients/:id" element={<ProtectedRoute><ClientDetail /></ProtectedRoute>} />
+            <Route path="/alerts" element={<ProtectedRoute><Alerts /></ProtectedRoute>} />
+            <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+            <Route path="/projects/:id" element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>} />
+            <Route path="/finance" element={<ProtectedRoute allowedRoles={["FINANCIAL", "ADMIN"]}><Finance /></ProtectedRoute>} />
+            <Route path="/finance/:id" element={<ProtectedRoute allowedRoles={["FINANCIAL", "ADMIN"]}><FinanceDetail /></ProtectedRoute>} />
+            <Route path="/users" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Users /></ProtectedRoute>} />
+            <Route path="/users/:id" element={<ProtectedRoute allowedRoles={["ADMIN"]}><UserDetail /></ProtectedRoute>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

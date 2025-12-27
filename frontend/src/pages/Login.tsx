@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import '../styles.css'
+import { useAuth } from '../auth/AuthProvider'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const auth = useAuth()
+  const navigate = useNavigate()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     try {
-      const res = await axios.post('/api/auth/login', { email, password })
-      localStorage.setItem('token', res.data.token)
-      localStorage.setItem('user', JSON.stringify(res.data.user))
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
-      window.location.href = '/dashboard'
+      await auth.login(email, password)
+      navigate('/dashboard')
     } catch (err: any) {
       setError('Falha ao autenticar. Verifique suas credenciais e tente novamente.')
     }
